@@ -21,6 +21,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
+    - name: Cache
+      uses: actions/cache@v3.3.2
+      with:
+        # A list of files, directories, and wildcard patterns to cache and restore
+        path: /nix
+        # An explicit key for restoring and saving the cache
+        key: ${{ runner.os }}-primes
+
     - uses: cachix/install-nix-action@v23
     - uses: cachix/cachix-action@v12
       with:
@@ -30,3 +39,6 @@ jobs:
 
     - name: Build the devenv shell and run any pre-commit hooks
       run: devenv ci
+
+    - name: Gulp Lint
+      run: devenv shell gulp lint
